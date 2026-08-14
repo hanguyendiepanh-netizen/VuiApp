@@ -1,0 +1,194 @@
+[
+  {
+    "id": "r01",
+    "name": "Thịt chiên riềng sả",
+    "category": "rice",
+    "display_order": 1
+  },
+  {
+    "id": "r02",
+    "name": "Thịt kho cùi dừa",
+    "category": "rice",
+    "display_order": 2
+  },
+  {
+    "id": "r03",
+    "name": "Thịt hấp sả",
+    "category": "rice",
+    "display_order": 3
+  },
+  {
+    "id": "r04",
+    "name": "Thịt quay",
+    "category": "rice",
+    "display_order": 4
+  },
+  {
+    "id": "r05",
+    "name": "Thịt xào sả ớt",
+    "category": "rice",
+    "display_order": 5
+  },
+  {
+    "id": "r06",
+    "name": "Thịt quay sả tắc",
+    "category": "rice",
+    "display_order": 6
+  },
+  {
+    "id": "r07",
+    "name": "Thịt nấu giả cày",
+    "category": "rice",
+    "display_order": 7
+  },
+  {
+    "id": "r08",
+    "name": "Thịt hầm thuốc bắc",
+    "category": "rice",
+    "display_order": 8
+  },
+  {
+    "id": "r09",
+    "name": "Gà chiên tỏi ớt",
+    "category": "rice",
+    "display_order": 9
+  },
+  {
+    "id": "r10",
+    "name": "Gà chiên dừa",
+    "category": "rice",
+    "display_order": 10
+  },
+  {
+    "id": "r11",
+    "name": "Gà rang lá chanh",
+    "category": "rice",
+    "display_order": 11
+  },
+  {
+    "id": "r12",
+    "name": "Gà rang gừng",
+    "category": "rice",
+    "display_order": 12
+  },
+  {
+    "id": "r13",
+    "name": "Gà xào sả ớt",
+    "category": "rice",
+    "display_order": 13
+  },
+  {
+    "id": "r14",
+    "name": "Gà om nấm",
+    "category": "rice",
+    "display_order": 14
+  },
+  {
+    "id": "r15",
+    "name": "Cá trôi kho chuối",
+    "category": "rice",
+    "display_order": 15
+  },
+  {
+    "id": "r16",
+    "name": "Cá chim chiên vừng",
+    "category": "rice",
+    "display_order": 16
+  },
+  {
+    "id": "r17",
+    "name": "Cá basa kho tộ",
+    "category": "rice",
+    "display_order": 17
+  },
+  {
+    "id": "r18",
+    "name": "Bò xào cần tỏi",
+    "category": "rice",
+    "display_order": 18
+  },
+  {
+    "id": "r19",
+    "name": "Bò hầm củ quả",
+    "category": "rice",
+    "display_order": 19
+  },
+  {
+    "id": "r20",
+    "name": "Tôm rang lá chanh",
+    "category": "rice",
+    "display_order": 20
+  },
+  {
+    "id": "b01",
+    "name": "Bún vịt",
+    "category": "breakfast",
+    "display_order": 1
+  },
+  {
+    "id": "b02",
+    "name": "Phở gà",
+    "category": "breakfast",
+    "display_order": 2
+  },
+  {
+    "id": "b03",
+    "name": "Bún bò Huế",
+    "category": "breakfast",
+    "display_order": 3
+  },
+  {
+    "id": "b04",
+    "name": "Bánh cuốn chả",
+    "category": "breakfast",
+    "display_order": 4
+  },
+  {
+    "id": "b05",
+    "name": "Bún riêu cua chả giò",
+    "category": "breakfast",
+    "display_order": 5
+  },
+  {
+    "id": "b06",
+    "name": "Bún mọc",
+    "category": "breakfast",
+    "display_order": 6
+  },
+  {
+    "id": "b07",
+    "name": "Bún riêu chả lá lốt",
+    "category": "breakfast",
+    "display_order": 7
+  },
+  {
+    "id": "b08",
+    "name": "Bún chấm chả viên",
+    "category": "breakfast",
+    "display_order": 8
+  },
+  {
+    "id": "b09",
+    "name": "Cơm rang thập cẩm",
+    "category": "breakfast",
+    "display_order": 9
+  },
+  {
+    "id": "b10",
+    "name": "Bún trộn",
+    "category": "breakfast",
+    "display_order": 10
+  },
+  {
+    "id": "b11",
+    "name": "Bún cá",
+    "category": "breakfast",
+    "display_order": 11
+  },
+  {
+    "id": "b12",
+    "name": "Phở bò",
+    "category": "breakfast",
+    "display_order": 12
+  }
+]
