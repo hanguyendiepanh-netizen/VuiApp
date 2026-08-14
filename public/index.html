@@ -1338,6 +1338,13 @@ const Api = {
     const res = await fetch('/api/leaderboard?weekId=' + encodeURIComponent(CONFIG.weekId) + '&voteId=' + encodeURIComponent(state.voteId || ''));
     if(!res.ok) return null;
     return res.json(); // { top10[], myRank }
+  },
+  async menu(category){
+    const res = await fetch('/api/menu?category=' + encodeURIComponent(category));
+    const data = await safeJson(res);
+    if(!res.ok || !data) return null;
+    // đổi tên field cho khớp với chỗ render (m.img thay vì m.image_url)
+    return data.items.map(it => ({ id: it.id, name: it.name, img: it.image_url }));
   }
 };
 
@@ -1423,6 +1430,18 @@ async function init(){
   document.querySelectorAll('#logo-img, #logo-img-2, #logo-img-3, #logo-img-4').forEach(el=> el.src = DATA.logo);
   document.getElementById('logo-yokowo').src = DATA.yokowoLogo;
   document.getElementById('logo-yokowo-2').src = DATA.yokowoLogo;
+
+  // Lấy danh sách món thật từ DB (ảnh có thể đã được đổi sang URL Supabase
+  // Storage thật qua scripts/upload-food-image.mjs, thay cho base64 tạm).
+  // Nếu API lỗi, giữ nguyên DATA.rice/breakfast hard-code sẵn trong file này
+  // để prototype vẫn chạy offline được.
+  try{
+    const [riceItems, bfItems] = await Promise.all([Api.menu('rice'), Api.menu('breakfast')]);
+    if(riceItems && riceItems.length) DATA.rice = riceItems;
+    if(bfItems && bfItems.length) DATA.breakfast = bfItems;
+  }catch(e){
+    console.warn('Không lấy được /api/menu, dùng danh sách món hard-code tại chỗ.', e);
+  }
 
   renderFoodGrid('rice');
   renderFoodGrid('breakfast');
