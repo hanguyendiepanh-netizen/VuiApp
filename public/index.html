@@ -1245,9 +1245,9 @@ const CONFIG = {
   voteDaysText: 'thứ Hai đến thứ Năm',   // câu mô tả chu kỳ vote hiển thị ở màn chờ
   publishDayText: 'thứ Bảy',
   deadlineText: '03/09',
-  /* DEMO: giả lập "hôm nay" là 08:00 ngày 01/09 để countdown chạy đúng bối cảnh chiến dịch.
-     PRODUCTION: đặt demoNow = null để dùng giờ thật của máy user. */
-  demoNow: '2026-09-01T08:00:00',
+  /* null = dùng giờ thật của máy user (production). Chỉ set giá trị ISO ở đây
+     khi cố tình muốn giả lập "hôm nay" để demo/test offline. */
+  demoNow: null,
   deadlineISO: '2026-09-03T23:59:59',   // deadline bình chọn (thứ 5)
   publishISO:  '2026-09-05T09:00:00',   // thời điểm công bố kết quả (thứ 7)
   pickCount: 7,                          // số món phải chọn mỗi menu
@@ -1454,11 +1454,19 @@ async function init(){
   try{
     const campaign = await Api.campaignCurrent();
     if(campaign){
+      const ddmm = iso => { const d = new Date(iso); return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0'); };
+      const weekdayShort = iso => ['CN','T2','T3','T4','T5','T6','T7'][new Date(iso).getDay()];
+
       CONFIG.weekId = campaign.week_id;
       CONFIG.weekLabel = campaign.label;
       CONFIG.weekRange = campaign.range_text;
+      CONFIG.startDate = ddmm(campaign.vote_start_at);
       CONFIG.deadlineISO = campaign.vote_deadline_at;
+      CONFIG.deadlineText = ddmm(campaign.vote_deadline_at);
       CONFIG.publishISO = campaign.publish_at;
+      CONFIG.publishDate = weekdayShort(campaign.publish_at) + ' ' + ddmm(campaign.publish_at);
+      CONFIG.publishDateShort = ddmm(campaign.publish_at);
+      CONFIG.lockDate = weekdayShort(campaign.lock_at) + ' ' + ddmm(campaign.lock_at);
       CONFIG.rewards = campaign.rewards;
       CONFIG.pickCount = campaign.pick_count;
       CONFIG.maxScore = campaign.max_score;
