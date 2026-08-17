@@ -1,8 +1,10 @@
 // Uploads a food photo to Supabase Storage and points foods.image_url at it,
 // replacing whatever placeholder (base64 or otherwise) was there before.
+// If <foodId> doesn't exist yet, pass --name/--category to create it first.
 //
-// Usage: node scripts/upload-food-image.mjs <foodId> <path-to-image>
-// Example: node scripts/upload-food-image.mjs r01 "./Menu tuần 1/Thịt chiên riềng xả.png"
+// Usage: node scripts/upload-food-image.mjs <foodId> <path-to-image> [--name "Tên món" --category rice|breakfast]
+// Example (existing food): node scripts/upload-food-image.mjs r01 "./Menu tuần 1/Thịt chiên riềng xả.png"
+// Example (new food):      node scripts/upload-food-image.mjs r21 "./Menu tuần 1/Bò om dưa chua.png" --name "Bò om dưa chua" --category rice
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
@@ -24,11 +26,17 @@ function loadEnvLocal() {
 }
 loadEnvLocal();
 
-const [, , foodId, filePath] = process.argv;
+const [, , foodId, filePath, ...rest] = process.argv;
 if (!foodId || !filePath) {
-  console.error('Usage: node scripts/upload-food-image.mjs <foodId> <path-to-image>');
+  console.error('Usage: node scripts/upload-food-image.mjs <foodId> <path-to-image> [--name "..." --category rice|breakfast]');
   process.exit(1);
 }
+function flag(name) {
+  const i = rest.indexOf(`--${name}`);
+  return i === -1 ? null : rest[i + 1];
+}
+const newName = flag('name');
+const newCategory = flag('category');
 if (!existsSync(filePath)) {
   console.error(`File not found: ${filePath}`);
   process.exit(1);
@@ -56,15 +64,37 @@ async function ensureBucket() {
 }
 
 async function main() {
-  const { data: food, error: foodErr } = await supabase
+  let { data: food, error: foodErr } = await supabase
     .from('foods')
     .select('id,name,category')
     .eq('id', foodId)
     .maybeSingle();
   if (foodErr) throw foodErr;
+
   if (!food) {
-    console.error(`No food row with id "${foodId}" — check public/foods.json for the right id.`);
-    process.exit(1);
+    if (!newName || !newCategory) {
+      console.error(
+        `No food row with id "${foodId}". To create it, pass --name "Tên món" --category rice|breakfast.`
+      );
+      process.exit(1);
+    }
+    const { count } = await supabase
+      .from('foods')
+      .select('id', { count: 'exact', head: true })
+      .eq('category', newCategory);
+    const { data: created, error: createErr } = await supabase
+      .from('foods')
+      .insert({ id: foodId, name: newName, category: newCategory, display_order: (count ?? 0) + 1 })
+      .select('id,name,category')
+      .single();
+    if (createErr) throw createErr;
+    food = created;
+    console.log(`Created new food "${foodId}" (${newName}, ${newCategory}).`);
+  } else if (newName && newName !== food.name) {
+    const { error: renameErr } = await supabase.from('foods').update({ name: newName }).eq('id', foodId);
+    if (renameErr) throw renameErr;
+    console.log(`Renamed ${foodId}: "${food.name}" -> "${newName}"`);
+    food = { ...food, name: newName };
   }
 
   await ensureBucket();
